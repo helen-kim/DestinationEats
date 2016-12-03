@@ -1,0 +1,38 @@
+{
+  "name": "RestaurantApp_Final_Project",
+  "version": "1.0.0",
+  "description": "Create restaurant lists for easy itinerary management.",
+  "keywords": [
+    "OpenShift",
+    "Node.js",
+    "application",
+    "openshift"
+  ],
+  "author": {
+    "name": "Helen Kim",
+    "email": "hyejunk@andrew.cmu.edu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openshift/origin-server"
+  },
+
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "mongodb": "^2.0.48",
+    "morgan": "^1.6.1"
+  },
+  "devDependencies": {},
+  "bundleDependencies": [],
+
+  "private": true,
+  "main": "app.js",
+  "start": "node app.js"
+}

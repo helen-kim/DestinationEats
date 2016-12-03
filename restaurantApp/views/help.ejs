@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title><%= title %></title>
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="javascripts/index.js"></script>
+	</head>
+	<body>
+		<h1> Restaurant Model </h1> 
+		<form id="put">
+		 	<fieldset>
+				<h3>Add Restaurant:</h3>
+				Restaurant Name: <input type="text" id="put_name"><br>
+				City: <input type="text" id="put_city"><br>
+				Type: <input type="text" id="put_type"><br>
+				<input type="submit" value="Create">
+				<p><span id="put_result"></span></p>
+		  </fieldset>
+		</form>
+		<form id="get">
+		 	<fieldset>
+				<h3>Find Restaurant:</h3>
+				Restaurant Name: <input type="text" id="get_name"><br>
+				<input type="submit" value="Retrieve">
+				<p><span id="get_result"></span></p>
+		  </fieldset>
+		</form>
+		<form id="post">
+		 	<fieldset>
+				<h3>Update Restaurant:</h3>
+				Restaurant Name: <input type="text" id="post_name"><br>
+				City: <input type="text" id="post_city"><br>
+				Type: <input type="text" id="post_type"><br>
+				<input type="submit" value="Update">
+				<p><span id="post_result"></span></p>
+		  </fieldset>
+		</form>
+		<form id="delete">
+		 	<fieldset>
+				<h3>Delete Restaurant:</h3>
+				Restaurant Name: <input type="text" id="delete_name"><br>
+				<input type="submit" value="Delete">
+				<p><span id="delete_result"></span></p>
+		  </fieldset>
+		</form>
+	</body>
+</html>
+
+
+
+
