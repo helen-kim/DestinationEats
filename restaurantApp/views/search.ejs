@@ -1,0 +1,29 @@
+<html>
+  <head>
+  	<title><%= title %></title>
+  	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="javascripts/oauth.js"></script>
+    <script src="javascripts/sha1.js"></script>
+    <script src="javascripts/search.js"></script>
+  </head>
+  <body>
+   <div id = info>
+   	<h1><%= title %></h1>
+   </div>
+   <br>
+  <div class="container">
+    <div class="tab-content">
+      <div id="search" class="tab-pane fade">
+        <form id="f1">
+          <h4>Enter the Location You Will be Visiting:</h4>
+      		Location: <input id="searchLocation" type="text" name="location" value="" /><br>
+      		<input type="submit" value="Search"/>
+    	  </form>
+        <p>
+    	  <div id="searchContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  </body>
+</html>

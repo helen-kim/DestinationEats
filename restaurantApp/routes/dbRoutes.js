@@ -8,7 +8,7 @@ exports.init = function(app) {
   app.get('/', index); // For now returns test index page
   // app.get('/home', homepage); // Can be accessed by another url
   // app.get('/about', about); // The about page
-  // app.get('/search', search); // The search page
+  app.get('/search', search); // The search page
   // app.get('/list', list); //The personalized restaurant list page
  
   // The collection parameter maps directly to the mongoDB collection
@@ -34,7 +34,7 @@ about = function(req, res) {
 }
 
 search = function(req, res) {
-  // render search page 
+  res.render('search', {title: 'Yelp API Test'})
 }
 
 list = function(req, res) {
