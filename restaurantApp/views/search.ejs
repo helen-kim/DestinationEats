@@ -1,29 +1,137 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ./partials/head %>
+</head>
+
+<body>
+  <% include ./partials/nav %>
+
+  <div class="container">
+    <div class="tab-content">
+      <div id="search" class="tab-pane fade">
+        <center>
+        <form id="f1" class="ui large form">
+          <p>Enter the Location You Will be Visiting:</p>
+          <div class="inline field">
+            <label>Location: </label>
+            <input id="searchLocation" type="text" name="location" placeholder="e.g. Pittsburgh">
+          <button class="ui button" type="submit">Search</button>
+          </div>
+        </form>
+        <p>
+        <div id="searchContainer1">
+          <table class="ui celled padded table">
+            <thead>
+              <tr><th class="single line center aligned">Restaurant</th>
+              <th class="center aligned">Address</th>
+              <th class="center aligned">Rating</th>
+              <th class="center aligned"></th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        </div>
+        </center>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+      <% include ./partials/footer %>
+  </footer>
+
+</body>
+
+</html>
+
+
+<!-- <html>
   <head>
-  	<title><%= title %></title>
-  	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
     <script src="javascripts/oauth.js"></script>
     <script src="javascripts/sha1.js"></script>
     <script src="javascripts/search.js"></script>
   </head>
   <body>
    <div id = info>
-   	<h1><%= title %></h1>
    </div>
    <br>
   <div class="container">
     <div class="tab-content">
       <div id="search" class="tab-pane fade">
-        <form id="f1">
-          <h4>Enter the Location You Will be Visiting:</h4>
-      		Location: <input id="searchLocation" type="text" name="location" value="" /><br>
-      		<input type="submit" value="Search"/>
+        <form id="f1" class="ui large form">
+          <p>Enter the Location You Will be Visiting:</p>
+          <div class="inline field">
+            <label>Location: </label>
+            <input id="searchLocation" type="text" name="location" placeholder="e.g. Pittsburgh">
+      		<button class="ui button" type="submit">Search</button>
+          </div>
     	  </form>
         <p>
-    	  <div id="searchContainer"></div>
+    	  <div id="searchContainer" class="fourteen wide column">
+          <table class="ui celled padded table">
+            <thead>
+              <tr><th class="single line">Restaurant</th>
+              <th>Address</th>
+              <th>Rating</th>
+              </tr>
+            </thead>
+            <div id="tbody"><tbody>
+            </tbody></div>
+          </table> 
+        </div>
       </div>
     </div>
   </div>
 
   </body>
 </html>
+
+<table class="ui celled padded table">
+  <thead>
+    <tr><th class="single line">Evidence Rating</th>
+    <th>Effect</th>
+    <th>Efficacy</th>
+    <th>Consensus</th>
+    <th>Comments</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>
+        <h2 class="ui center aligned header">A</h2>
+      </td>
+      <td class="single line">
+        Power Output
+      </td>
+      <td>
+        <div class="ui star rating" data-rating="3" data-max-rating="3"></div>
+      </td>
+      <td class="right aligned">
+        80% <br>
+        <a href="#">18 studies</a>
+      </td>
+      <td>Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders.</td>
+    </tr>
+    <tr>
+      <td>
+        <h2 class="ui center aligned header">A</h2>
+      </td>
+      <td class="single line">
+        Weight
+      </td>
+      <td>
+        <div class="ui star rating" data-rating="3" data-max-rating="3"></div>
+      </td>
+      <td class="right aligned">
+        100% <br>
+        <a href="#">65 studies</a>
+      </td>
+      <td>Creatine is the reference compound for power improvement, with numbers from one meta-analysis to assess potency</td>
+    </tr>
+  </tbody>
+</table> -->

@@ -1,11 +1,15 @@
-
-
 $(document).ready(function()  {
   $('#f1').submit(getRestaurants);
+  $('#add').onClick(toggleButton);
 
+  function toggleButton() {
+    console.log("pressed button");
+    event.preventDefault();
+
+  }
   // makes the API request to search for a movie
   function getRestaurants() {
-    $('#searchContainer').empty();
+    $('#tbody').empty();
     function cb(data) {        
       console.log("cb: " + JSON.stringify(data));
     }
@@ -66,32 +70,72 @@ $(document).ready(function()  {
     })
     .done(function(response) {
             for (var i = 0; i < response.businesses.length; i++) {
-                var info  = document.getElementById('searchContainer');
-                var restaurantdiv = document.createElement('div');
-              
-                // add name
-                var name  = document.createElement('h4');
-                var nameText = document.createTextNode(response.businesses[i].name);
-                name.appendChild(nameText);
-                restaurantdiv.appendChild(name);
+                var name = response.businesses[i].name;
+                var address = response.businesses[i].location.display_address.join("\n");
+                var rating = Math.round(response.businesses[i].rating);
+                console.log('restaurant: '+name+', address: '+address+', rating: '+rating);
+                var row = document.createElement('tr');
 
-                // add address
-                var add  = document.createElement('h6');
-                var addText = document.createTextNode(response.businesses[i].location.display_address);
-                add.appendChild(addText);
-                restaurantdiv.appendChild(add);
+                // force sync table creation
+                try {
+                    try {
+                        try{
+                            try{
+                                try {
+                                    // add name
+                                    var nametd  = document.createElement('td');
+                                    nametd.className = "center aligned";
+                                    var nameh = document.createElement('h3');
+                                    nameh.className = "ui center aligned header";
+                                    var nameText = document.createTextNode(name);
+                                    nameh.appendChild(nameText);
+                                    nametd.appendChild(nameh);
+                                    row.appendChild(nametd);
+                                } catch(err) {
+                                    console.log(err);
+                                }
 
-                // add rating img
-                var rate  = document.createElement('img');
-                // $("img").css("width", 250);
-                rate.src = response.businesses[i].rating_img_url;
-                restaurantdiv.appendChild(rate)
+                                // add address
+                                var addtd  = document.createElement('td');
+                                addtd.className = "center aligned";
+                                var addText = document.createTextNode(address);
+                                addtd.appendChild(addText);
+                                row.appendChild(addtd);
+                            } catch(err) {
+                                console.log(err);
+                            }
 
-                // add break
-                var brk  = document.createElement('p');
-                restaurantdiv.appendChild(brk);    
+                            // add rating
+                            var ratetd = document.createElement('td');
+                            var rated = document.createElement('div');
+                            rated.className = "ui star rating";
+                            ratetd.appendChild(rated);
+                            row.appendChild(ratetd);
+                        } catch(err) {
+                            console.log(err);
+                        }
 
-                info.appendChild(restaurantdiv);
+                        $('.ui .rating').rating({
+                            initialRating: rating,
+                            maxRating: 5
+                        }, 'disable');
+                    } catch(err) {
+                        console.log(err);
+                    }
+
+                    // add button
+                    var buttontd = document.createElement('td');
+                    var addbutton = document.createElement('button');
+                    addbutton.id = "add";
+                    var buttontext = document.createTextNode('Add');
+                    addbutton.appendChild(buttontext);
+                    buttontd.appendChild(addbutton);
+                    row.appendChild(buttontd);
+                } catch(err) {
+                    console.log(err);
+                }
+
+                $('#tbody').append(row);
             }
         }
     )

@@ -5,11 +5,13 @@ var mongoModel = require("../models/mongoModel.js")
 
 // Define the routes for this controller
 exports.init = function(app) {
-  app.get('/', index); // For now returns test index page
-  // app.get('/home', homepage); // Can be accessed by another url
-  // app.get('/about', about); // The about page
+  app.get('/', homepage); // The homepage page
+  app.get('/home', homepage); // Can be accessed by another url
+  app.get('/logout', logout); // Log out user and end session
+  app.get('/about', about); // The about page
   app.get('/search', search); // The search page
-  // app.get('/list', list); //The personalized restaurant list page
+  app.get('/mylists', mylists); // My restaurant lists page
+  app.get('/test', test); // Restaurant Model Test
  
   // The collection parameter maps directly to the mongoDB collection
   app.put('/:collection', doCreate); // CRUD Create
@@ -21,24 +23,49 @@ exports.init = function(app) {
 //------------------------------ROUTE CALLS FOR STATIC PAGES-------------------------------------------
 
 // Model test:  display instructions for use
-index = function(req, res) {
+test = function(req, res) {
   res.render('help', {title: 'Restaurant Model Test'})
 };
 
 homepage = function(req, res) {
-  // render home page 
+  if ( req.session.user == undefined) {
+    res.render('homepage', { username: false } );
+  }
+  else {
+    res.render('homepage', { username: req.session.user } );
+  }
+}
+
+logout = function(req, res) {
+  req.session.reset();
+  res.redirect('/home');
 }
 
 about = function(req, res) {
-  // render about page 
+  if ( req.session.user == undefined) {
+    res.render('homepage', { username: false } );
+  }
+  else {
+    res.render('homepage', { username: req.session.user } );
+  }
 }
 
 search = function(req, res) {
-  res.render('search', {title: 'Yelp API Test'})
+  if ( req.session.user == undefined) {
+    res.render('homepage', { username: false } );
+  }
+  else {
+    res.render('search', { username: req.session.user } );
+  }
 }
 
-list = function(req, res) {
-  // render lists page
+mylists = function(req, res) {
+  if ( req.session.user == undefined) {
+    res.render('homepage', { username: false } );
+  }
+  else {
+    res.render('mylists', { username: req.session.user } );
+  }
 }
 
 //------------------------------ROUTE CALLS FOR CRUD FUNCTIONATLITY-------------------------------------------
@@ -77,14 +104,17 @@ doCreate = function(req, res){
    *    is successful, a callback function is provided for the model to 
    *    call in the future whenever the create has completed.
    */
+  if (req.params.collection == "mylists") {
+    /* add current user in session as attribute to in document */
+    req.body.username = req.session.user;
+  }
   mongoModel.create ( req.params.collection, 
-	                    req.body,
-		                  function(result) {
-		                    // result equal to true means create was successful
-  		                  var success = (result ? "Create successful" : "Create unsuccessful");
-	  	                  res.render('message', {title: 'Restaurants Demo', obj: success});
-     		                console.log("2. Done with callback in dbRoutes create");
-		                  });
+                      req.body,
+                      function(result) {
+                        // result equal to true means create was successful
+                        var success = (result ? "Create successful" : "Create unsuccessful");
+                        res.render('message', {title: 'Mongo Demo', obj: success});
+                      });
   console.log("3. Done with doCreate in dbRoutes");
 }
 
@@ -104,15 +134,23 @@ doRetrieve = function(req, res){
    *    model once the retrieve has been successful.
    * modelData is an array of objects returned as a result of the Retrieve
    */
+  if (req.params.collection == "mylists") {
+    /* add current user in session as attribute to search for in document */
+    req.query.username = req.session.user;
+  }
   mongoModel.retrieve(
     req.params.collection, 
     req.query,
     function(modelData) {
       if (modelData.length) {
-        res.render('results',{title: 'Restaurants Demo', obj: modelData});
-        // if (req.params.collection == "list") {
-        //   res.render('results',{title: 'Restaurants', obj: modelData});;
-        // }
+        if (req.params.collection == "users") {
+          /* Create session with username when user logs in */
+          req.session.user = req.query.username;
+          res.render('user_results',{obj: modelData});
+        }
+        else if (req.params.collection == "mylists") {
+          res.render('user_lists_results',{obj: modelData});
+        }
       } 
       else {
         var message = "No search results found. Please try again!";
@@ -130,26 +168,26 @@ doRetrieve = function(req, res){
  * you are using and the content of the documents you are storing to them.)
  */ 
 doUpdate = function(req, res){
-  // if there is no filter to select documents to update, select all documents
-  var filter = {"name": req.body.filter};
+  // filter on user and name of list, which cannot be updated
+  var filter = {"username": req.session.user, "title": req.body.filter};
   // if there no update operation defined, render an error page.
   if (!req.body.update) {
     res.render('message', {title: 'Restaurant Demo', obj: "No update operation defined"});
     return;
   }
-  var update = {"$set":{"city":req.body.update[0], "type":req.body.update[1]}};
-  /*
-   * Call the model Update with:
-   *  - The collection to update
-   *  - The filter to select what documents to update
-   *  - The update operation
-   *    E.g. the request body string:
-   *      find={"name":"pear"}&update={"$set":{"leaves":"green"}}
-   *      becomes filter={"name":"pear"}
-   *      and update={"$set":{"leaves":"green"}}
-   *  - As discussed above, an anonymous callback function to be called by the
-   *    model once the update has been successful.
-   */
+  var update = {"$set":{"restaurants":req.body.update}};
+  
+   // * Call the model Update with:
+   // *  - The collection to update
+   // *  - The filter to select what documents to update
+   // *  - The update operation
+   // *    E.g. the request body string:
+   // *      find={"name":"pear"}&update={"$set":{"leaves":"green"}}
+   // *      becomes filter={"name":"pear"}
+   // *      and update={"$set":{"leaves":"green"}}
+   // *  - As discussed above, an anonymous callback function to be called by the
+   // *    model once the update has been successful.
+   
   mongoModel.update(  req.params.collection, filter, update,
 		                  function(status) {
               				  res.render('message',{title: 'Restaurant Demo', obj: status});
@@ -161,6 +199,11 @@ doUpdate = function(req, res){
  */
 
 doDelete = function(req, res) {
+  if (req.params.collection == "mylists") {
+    /* add current user in session as attribute to in document */
+    req.body.username = req.session.user;
+    console.log(req.body);
+  }
    mongoModel.delete (req.params.collection, 
                       req.body,
                       function(result) {

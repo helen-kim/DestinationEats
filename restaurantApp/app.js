@@ -2,6 +2,7 @@ var morgan = require('morgan');
 var fs = require('fs');
 var path = require('path');
 var bodyParser = require('body-parser');
+var session = require('client-sessions');
 
 var express = require('express');
 var app = express();
@@ -21,6 +22,14 @@ app.set('view engine', 'ejs');
 // Define how to log events
 app.use(morgan('tiny'));	
 
+//Handle session
+app.use(session({
+  cookieName: 'session',
+  secret: 'ASDfd223lasdF2k9S2;l!2asd;af)O',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
+
 // parse application/x-www-form-urlencoded, with extended qs library
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -30,7 +39,6 @@ fs.readdirSync('./routes').forEach(function (file){
   if (path.extname(file) == '.js') {
     console.log("Adding routes in "+file);
   	require('./routes/'+ file).init(app);
-  	require('yelp').init(app);
   	}
 });
 
