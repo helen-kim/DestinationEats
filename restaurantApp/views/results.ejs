@@ -1,1 +1,54 @@
-<p id="obj"><%- JSON.stringify(obj) %></p>
+<% if (obj.length) { %>
+  <% var log = {}; %>
+  <% var distinct = []; %>
+  <% for(var i = 0; i < obj.length; i++) { %>
+       <% if (typeof(log[obj[i].title]) == "undefined") { %>
+        <% distinct.push(obj[i].title); %>
+        <% log[obj[i].title] = []; %>
+       <% } %>
+       <% var rest = log[obj[i].title]; %>
+       <% rest.push(obj[i].restaurant); %>
+       <% log[obj[i].title] = rest; %>
+  <% }; %>
+  <% var rests = []; %>
+  <% for (var i in distinct) { %>
+    <% var all = {}; %>
+    <% all["title"] = distinct[i]; %>
+    <% all["restaurants"] = log[distinct[i]]; %>
+    <% rests.push(all); %>
+  <% } %>
+  <% } %>
+
+<center>
+  <div class="ui accordion">
+    <% for (var i in rests) { %>
+      <div class="title">
+        <i class="dropdown icon"></i>
+        <%= rests[i].title %>
+      </div>
+      <div class="content">
+        <div class="ui cards" id="restCards">
+        <% var curr = rests[i].restaurants %>
+        <% console.log(curr.length) %>
+          <% for (var j in curr) { %>
+            <div class="ui centered card">
+              <div class="image">
+                <img src=<%= curr[j].img %>>
+              </div>
+              <div class="content">
+                <a class="header"><%= curr[j].name %></a>
+                <div class="description"><%= curr[j].address %></div>
+              </div>
+              <div class="extra content">
+                <div class='ui bottom attached button' onclick="delRest('<%= rests[i].title %>', '<%= curr[j].name %>', '<%= curr[j].address %>', '<%= curr[j].img %>')">
+                  <i class='remove icon'></i>
+                  Remove
+                </div>
+              </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</center>
