@@ -1,35 +1,4 @@
 $(document).ready(function() {
-  
-  // show all user lists (titles only) when user loads/is on the mylists page
-  $.ajax({
-      url: './mylists',
-      success:function(result) {
-        $('#allLists').html(result);
-      }
-  });
-
-  // CRUD functionality for restaurant lists
-  $('#search').submit(newRestDest);
-  $('#addRest').on('click', addRest);
-  $('#removeRest').on('click', updateRest);
-  $('#deleteList').on('click', deleteList);
-
-  function newRestDest(event) {
-
-  }
-
-  function addRest(event) {
-
-  }
-
-  function updateRest(event) {
-
-  }
-
-  function deleteList(event) {
-
-  }
-
   // CR functionality for users
   $('#login').submit(login_user); //read logged in user
   $('#register').submit(new_user); //create new user

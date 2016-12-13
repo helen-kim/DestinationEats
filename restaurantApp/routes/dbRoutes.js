@@ -104,16 +104,17 @@ doCreate = function(req, res){
    *    is successful, a callback function is provided for the model to 
    *    call in the future whenever the create has completed.
    */
-  if (req.params.collection == "mylists") {
+  if (req.params.collection == "lists") {
     /* add current user in session as attribute to in document */
     req.body.username = req.session.user;
   }
   mongoModel.create ( req.params.collection, 
                       req.body,
-                      function(result) {
+                      function(result, data) {
                         // result equal to true means create was successful
-                        var success = (result ? "Create successful" : "Create unsuccessful");
-                        res.render('message', {title: 'Mongo Demo', obj: success});
+                        // var success = (result ? "Create successful" : "Create unsuccessful");
+                        res.status(result).send('message', {title: 'Made new list', obj: data});
+                        console.log("from dbROutes: "+data);
                       });
   console.log("3. Done with doCreate in dbRoutes");
 }
@@ -149,7 +150,7 @@ doRetrieve = function(req, res){
           res.render('user_results',{obj: modelData});
         }
         else if (req.params.collection == "mylists") {
-          res.render('user_lists_results',{obj: modelData});
+          res.render('mylists',{obj: modelData});
         }
       } 
       else {

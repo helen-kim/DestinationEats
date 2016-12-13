@@ -1,15 +1,23 @@
 $(document).ready(function()  {
   $('#f1').submit(getRestaurants);
-  $('#add').onClick(toggleButton);
+  $('#f1').submit(newRestList);
 
-  function toggleButton() {
-    console.log("pressed button");
-    event.preventDefault();
-
+  function newRestList() {
+    $.ajax({
+            url: './lists',
+            type: 'PUT',
+            data: { title: $('#searchLocation').val(), restaurants: [] },
+            success: function(result){
+                console.log("Successfully created item");
+                console.log(data);
+            }
+        });
+        event.preventDefault();
   }
-  // makes the API request to search for a movie
+
+  // makes the API request to search for restaurants in city
   function getRestaurants() {
-    $('#tbody').empty();
+    $('#restCards').empty();
     function cb(data) {        
       console.log("cb: " + JSON.stringify(data));
     }
@@ -29,7 +37,7 @@ $(document).ready(function()  {
         }
     };
 
-    var limit = '20';
+    // var limit = '20';
     var sort = '0';
     var term = 'food'
     var near = $('#searchLocation').val();
@@ -40,7 +48,7 @@ $(document).ready(function()  {
     };
 
     var parameters = [];
-    parameters.push(['limit', limit]);
+    // parameters.push(['limit', limit]);
     parameters.push(['sort', sort]);
     parameters.push(['term', term]);
     parameters.push(['location', near]);
@@ -71,72 +79,28 @@ $(document).ready(function()  {
     .done(function(response) {
             for (var i = 0; i < response.businesses.length; i++) {
                 var name = response.businesses[i].name;
-                var address = response.businesses[i].location.display_address.join("\n");
+                var address = "<p>"+response.businesses[i].location.display_address.join("</p><p>")+"</p>";
+                var rawadd = response.businesses[i].location.display_address;
+                var restimg = response.businesses[i].image_url;
                 var rating = Math.round(response.businesses[i].rating);
-                console.log('restaurant: '+name+', address: '+address+', rating: '+rating);
-                var row = document.createElement('tr');
 
-                // force sync table creation
-                try {
-                    try {
-                        try{
-                            try{
-                                try {
-                                    // add name
-                                    var nametd  = document.createElement('td');
-                                    nametd.className = "center aligned";
-                                    var nameh = document.createElement('h3');
-                                    nameh.className = "ui center aligned header";
-                                    var nameText = document.createTextNode(name);
-                                    nameh.appendChild(nameText);
-                                    nametd.appendChild(nameh);
-                                    row.appendChild(nametd);
-                                } catch(err) {
-                                    console.log(err);
-                                }
+                var card = "";
+                //add restaurant image
+                card += "<div class='ui centered card' id='rest"+i+"'><div class='image'><img src='"+restimg+"'></div>";
+                // add name
+                card += "<div class='content'><div class='header'>"+name+"</div>";
+                // add address
+                card += "<div class='description'>"+address+"</div></div>";
+                // add button
 
-                                // add address
-                                var addtd  = document.createElement('td');
-                                addtd.className = "center aligned";
-                                var addText = document.createTextNode(address);
-                                addtd.appendChild(addText);
-                                row.appendChild(addtd);
-                            } catch(err) {
-                                console.log(err);
-                            }
+                var functioncall = "addRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
+                card += "<div class='ui bottom attached button' onclick="+functioncall+"><i class='add icon'></i>Add Restaurant</div>";
+                card += "<div class='ui popup'><div class='header'>Rating</div><div class='ui star rating' data-rating='3'></div></div></div>";
 
-                            // add rating
-                            var ratetd = document.createElement('td');
-                            var rated = document.createElement('div');
-                            rated.className = "ui star rating";
-                            ratetd.appendChild(rated);
-                            row.appendChild(ratetd);
-                        } catch(err) {
-                            console.log(err);
-                        }
+                // add card to cards list
+                $('#restCards').append(card);
 
-                        $('.ui .rating').rating({
-                            initialRating: rating,
-                            maxRating: 5
-                        }, 'disable');
-                    } catch(err) {
-                        console.log(err);
-                    }
-
-                    // add button
-                    var buttontd = document.createElement('td');
-                    var addbutton = document.createElement('button');
-                    addbutton.id = "add";
-                    var buttontext = document.createTextNode('Add');
-                    addbutton.appendChild(buttontext);
-                    buttontd.appendChild(addbutton);
-                    row.appendChild(buttontd);
-                } catch(err) {
-                    console.log(err);
-                }
-
-                $('#tbody').append(row);
-            }
+           }
         }
     )
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -155,6 +119,35 @@ $(function(){
       getRestaurants();
       e.preventDefault();
     }
-  })
-})
+  });
+});
 
+function addRest(title, name, address, img) {
+  console.log("finally clicked");
+
+  var restinfo = {};
+  restinfo.name = decodeURIComponent(name);
+  restinfo.address = decodeURIComponent(address);
+  restinfo.img = decodeURIComponent(img);
+
+  console.log(restinfo);
+
+  // retrieve current array of restaurants in list using title
+  var curr_restaurants = $.ajax({
+    url: './lists',
+    type: 'GET',
+    data: { title: decodeURIComponent(title) },
+    success: function(result) {
+      console.log("Successfully found item!");
+      return(result);
+    },
+    error: function(response, status) {
+      console.log("Doesn't exist");
+    }
+  });
+
+  console.log(curr_restaurants);
+  // add new restinfo to array
+  // update array of restaurants in list
+
+}

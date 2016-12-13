@@ -55,7 +55,8 @@ exports.create = function(collection, data, callback) {
       // use the callback function supplied by the controller to pass
       // back true if successful else false
       var success = (status.result.n == 1 ? true : false);
-      callback(success);
+      console.log("from mongoModel: "+data);
+      callback(success, data);
     });
 }
 
