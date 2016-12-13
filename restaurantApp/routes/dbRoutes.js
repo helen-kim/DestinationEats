@@ -110,11 +110,10 @@ doCreate = function(req, res){
   }
   mongoModel.create ( req.params.collection, 
                       req.body,
-                      function(result, data) {
+                      function(result) {
                         // result equal to true means create was successful
-                        // var success = (result ? "Create successful" : "Create unsuccessful");
-                        res.status(result).send('message', {title: 'Made new list', obj: data});
-                        console.log("from dbROutes: "+data);
+                        var success = (result ? "Create successful" : "Create unsuccessful");
+                        res.render('message', {title: 'Mongo Demo', obj: success});
                       });
   console.log("3. Done with doCreate in dbRoutes");
 }
@@ -135,7 +134,7 @@ doRetrieve = function(req, res){
    *    model once the retrieve has been successful.
    * modelData is an array of objects returned as a result of the Retrieve
    */
-  if (req.params.collection == "mylists") {
+  if (req.params.collection == "lists") {
     /* add current user in session as attribute to search for in document */
     req.query.username = req.session.user;
   }
@@ -149,8 +148,9 @@ doRetrieve = function(req, res){
           req.session.user = req.query.username;
           res.render('user_results',{obj: modelData});
         }
-        else if (req.params.collection == "mylists") {
+        else if (req.params.collection == "lists") {
           res.render('mylists',{obj: modelData});
+          console.log("modelData:"+modelData[0].restaurants);
         }
       } 
       else {
@@ -200,7 +200,7 @@ doUpdate = function(req, res){
  */
 
 doDelete = function(req, res) {
-  if (req.params.collection == "mylists") {
+  if (req.params.collection == "lists") {
     /* add current user in session as attribute to in document */
     req.body.username = req.session.user;
     console.log(req.body);

@@ -6,9 +6,16 @@
 </head>
 
 <body>
-    <% include ./partials/nav %>
 
     <p>This is the page for all the lists.</p>
+
+    <% if (obj.length) { %>
+    	<p>Parsing through model data</p>
+    	<p><%= obj.length %></p>
+    	<p><%= obj[0].title %></p>
+    	<p><%= obj[0].username %></p>
+    	<p><%= obj[0].restaurants %></p>
+	<% } %>
 
     <footer>
         <% include ./partials/footer %>

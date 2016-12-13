@@ -1,15 +1,14 @@
 $(document).ready(function()  {
-  $('#f1').submit(getRestaurants);
   $('#f1').submit(newRestList);
+  $('#f1').submit(getRestaurants);
 
   function newRestList() {
     $.ajax({
             url: './lists',
             type: 'PUT',
-            data: { title: $('#searchLocation').val(), restaurants: [] },
+            data: { title: $('#searchLocation').val(), restaurants: [{}] },
             success: function(result){
-                console.log("Successfully created item");
-                console.log(data);
+                $('#results').html(result);
             }
         });
         event.preventDefault();
@@ -132,22 +131,29 @@ function addRest(title, name, address, img) {
 
   console.log(restinfo);
 
-  // retrieve current array of restaurants in list using title
-  var curr_restaurants = $.ajax({
+  // retrieve current array of restaurants in list using titl
+
+  // add new restinfo to array
+  // update array of restaurants in list
+  $.ajax({
+      url: './lists',
+      type: 'POST',
+      data: { filter: decodeURIComponent(title), update: restinfo },
+      success:function(result){
+          console.log("Successfully updated item");
+          $('#results').html(result);
+      }
+  });
+
+  $.ajax({
     url: './lists',
     type: 'GET',
     data: { title: decodeURIComponent(title) },
     success: function(result) {
-      console.log("Successfully found item!");
-      return(result);
+      $('#results').html(result);
     },
     error: function(response, status) {
       console.log("Doesn't exist");
     }
   });
-
-  console.log(curr_restaurants);
-  // add new restinfo to array
-  // update array of restaurants in list
-
 }
