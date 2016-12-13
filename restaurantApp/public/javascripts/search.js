@@ -1,18 +1,5 @@
 $(document).ready(function()  {
-  $('#f1').submit(newRestList);
   $('#f1').submit(getRestaurants);
-
-  function newRestList() {
-    $.ajax({
-            url: './lists',
-            type: 'PUT',
-            data: { title: $('#searchLocation').val(), restaurants: [{}] },
-            success: function(result){
-                $('#results').html(result);
-            }
-        });
-        event.preventDefault();
-  }
 
   // makes the API request to search for restaurants in city
   function getRestaurants() {
@@ -83,6 +70,8 @@ $(document).ready(function()  {
                 var restimg = response.businesses[i].image_url;
                 var rating = Math.round(response.businesses[i].rating);
 
+
+
                 var card = "";
                 //add restaurant image
                 card += "<div class='ui centered card' id='rest"+i+"'><div class='image'><img src='"+restimg+"'></div>";
@@ -92,9 +81,12 @@ $(document).ready(function()  {
                 card += "<div class='description'>"+address+"</div></div>";
                 // add button
 
-                var functioncall = "addRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
-                card += "<div class='ui bottom attached button' onclick="+functioncall+"><i class='add icon'></i>Add Restaurant</div>";
-                card += "<div class='ui popup'><div class='header'>Rating</div><div class='ui star rating' data-rating='3'></div></div></div>";
+                console.log(near);
+                var add = "addRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
+                var del = "delRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
+                card += "<div class='extra content'><div class='ui two buttons'><div class='ui bottom attached button' onclick="+add+"><i class='add icon'></i>Add</div>";
+                card += "<div class='ui bottom attached button' onclick="+del+"><i class='remove icon'></i>Remove</div></div></div></div>";
+                // card += "<div class='ui popup'><div class='header'>Rating</div><div class='ui star rating' data-rating='3'></div></div></div>";
 
                 // add card to cards list
                 $('#restCards').append(card);
@@ -122,7 +114,7 @@ $(function(){
 });
 
 function addRest(title, name, address, img) {
-  console.log("finally clicked");
+  console.log("add clicked");
 
   var restinfo = {};
   restinfo.name = decodeURIComponent(name);
@@ -131,29 +123,37 @@ function addRest(title, name, address, img) {
 
   console.log(restinfo);
 
-  // retrieve current array of restaurants in list using titl
+  // create restaurant that has username, title, and restaurant info
+   $.ajax({
+            url: './lists',
+            type: 'PUT',
+            data: { title: decodeURIComponent(title), restaurant: restinfo },
+            success: function(result){
+                $('#results').html(result);
+            }
+        });
+        event.preventDefault();
+}
 
-  // add new restinfo to array
-  // update array of restaurants in list
-  $.ajax({
-      url: './lists',
-      type: 'POST',
-      data: { filter: decodeURIComponent(title), update: restinfo },
-      success:function(result){
-          console.log("Successfully updated item");
-          $('#results').html(result);
-      }
-  });
+function delRest(title, name, address, img) {
+  console.log("del clicked");
 
+  var restinfo = {};
+  restinfo.name = decodeURIComponent(name);
+  restinfo.address = decodeURIComponent(address);
+  restinfo.img = decodeURIComponent(img);
+
+  console.log(restinfo);
+
+  // delete restaurant that matches username, title, and restaurant details
   $.ajax({
-    url: './lists',
-    type: 'GET',
-    data: { title: decodeURIComponent(title) },
-    success: function(result) {
-      $('#results').html(result);
-    },
-    error: function(response, status) {
-      console.log("Doesn't exist");
-    }
-  });
+            url: './lists',
+            type: 'DELETE',
+            data: { title: decodeURIComponent(title), restaurant: restinfo },
+            success:function(result){
+                console.log("Successfully deleted item");
+                $('#results').append(result);
+            }
+        });
+        event.preventDefault();
 }

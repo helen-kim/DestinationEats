@@ -1,14 +1,1 @@
-<html>
-	<head>
-		<title><%= title %></title>
-	</head>
-	<body>
-		<% if (obj.length) { %>
-			[</br>
-				<% obj.forEach(function(next) { %>
-				<%= JSON.stringify(next) %></br>
-			<% }); %>
-			]
-		<% } %>
-	</body>
-</html>
+<p id="obj"><%- JSON.stringify(obj) %></p>

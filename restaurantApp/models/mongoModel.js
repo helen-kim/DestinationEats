@@ -100,12 +100,15 @@ exports.retrieve = function(collection, query, callback) {
      * iteration does the actual retrieve. toArray asynchronously retrieves the
      * whole result set and returns an array.
      */
+    console.log("query: "+query);
     mongoDB.collection(collection).find(query).toArray(function(err, docs) {
       if (err) doError(err);
       // docs are MongoDB documents, returned as an array of JavaScript objects
       // Use the callback provided by the controller to send back the docs.
+      console.log("docs: "+ docs);
       callback(docs);
     });
+
   }
 }
 

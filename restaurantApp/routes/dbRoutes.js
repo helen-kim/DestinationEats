@@ -132,7 +132,7 @@ doRetrieve = function(req, res){
    *  - The object to lookup in the model, from the request query string
    *  - As discussed above, an anonymous callback function to be called by the
    *    model once the retrieve has been successful.
-   * modelData is an array of objects returned as a result of the Retrieve
+   * modelData is an array of objects returned as a result osf the Retrieve
    */
   if (req.params.collection == "lists") {
     /* add current user in session as attribute to search for in document */
@@ -149,8 +149,9 @@ doRetrieve = function(req, res){
           res.render('user_results',{obj: modelData});
         }
         else if (req.params.collection == "lists") {
-          res.render('mylists',{obj: modelData});
-          console.log("modelData:"+modelData[0].restaurants);
+
+          res.render('results',{obj: modelData});
+          // res.render('search', {obj: modelData});
         }
       } 
       else {
