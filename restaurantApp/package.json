@@ -21,9 +21,12 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.0",
     "body-parser": "^1.14.1",
+    "client-sessions": "^0.7.0",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
+    "less": "^2.7.1",
     "mongodb": "^2.0.48",
     "morgan": "^1.6.1",
     "nonce": "^1.0.4",
@@ -31,6 +34,10 @@
     "request": "^2.79.0",
     "semantic-ui": "^2.2.6",
     "yelp": "^1.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "devDependencies": {},
   "bundleDependencies": [],
