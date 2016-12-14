@@ -8,21 +8,19 @@ $(document).ready(function()  {
     function cb(data) {        
       console.log("cb: " + JSON.stringify(data));
     }
-            
+    
+    // hidden authorization keys
     var auth = yelpcreds();
 
-    // var limit = '20';
+    // set search params
     var sort = '0';
     var term = 'food'
     var near = $('#searchLocation').val();
-
     var accessor = {
         consumerSecret : auth.consumerSecret,
         tokenSecret : auth.accessTokenSecret
     };
-
     var parameters = [];
-    // parameters.push(['limit', limit]);
     parameters.push(['sort', sort]);
     parameters.push(['term', term]);
     parameters.push(['location', near]);
@@ -42,7 +40,8 @@ $(document).ready(function()  {
     OAuth.SignatureMethod.sign(message, accessor);
 
     var parameterMap = OAuth.getParameterMap(message.parameters);
-        
+    
+    // actual API call using the authorization method specified above
     $.ajax({
         'url' : message.action,
         'data' : parameterMap,
@@ -58,8 +57,7 @@ $(document).ready(function()  {
                 var restimg = response.businesses[i].image_url;
                 var rating = Math.round(response.businesses[i].rating);
 
-
-
+                // create cards of restaurants and display on to HTML
                 var card = "";
                 //add restaurant image
                 card += "<div class='ui centered card' id='rest"+i+"'><div class='image'><img src='"+restimg+"'></div>";
@@ -68,7 +66,6 @@ $(document).ready(function()  {
                 // add address
                 card += "<div class='description'>"+address+"</div></div>";
                 // add button
-
                 var add = "addRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
                 var del = "delRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
                 card += "<div class='extra content'><div class='ui two buttons'><div class='ui bottom attached teal button' onclick="+add+"><i class='add icon'></i>Add</div>";
