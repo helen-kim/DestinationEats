@@ -19,7 +19,6 @@
   <% } %>
   <% } %>
 
-<center>
   <div class="ui accordion">
     <% for (var i in rests) { %>
       <div class="title">
@@ -40,7 +39,7 @@
                 <div class="description"><%= curr[j].address %></div>
               </div>
               <div class="extra content">
-                <div class='ui bottom attached button' onclick="delRest('<%= rests[i].title %>', '<%= curr[j].name %>', '<%= curr[j].address %>', '<%= curr[j].img %>')">
+                <div class='ui bottom attached button red button' id='del' onclick="delRest('<%= rests[i].title %>', '<%= curr[j].name %>', '<%= curr[j].address %>', '<%= curr[j].img %>')">
                   <i class='remove icon'></i>
                   Remove
                 </div>
@@ -51,4 +50,3 @@
     </div>
     <% } %>
   </div>
-</center>

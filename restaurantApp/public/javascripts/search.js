@@ -1,3 +1,4 @@
+//------------------------------SEARCH API & CRUD-------------------------------------------
 $(document).ready(function()  {
   $('#f1').submit(getRestaurants);
 
@@ -8,20 +9,7 @@ $(document).ready(function()  {
       console.log("cb: " + JSON.stringify(data));
     }
             
-    var auth = {
-        //
-        // Update with your auth tokens.
-        //
-        consumerKey : "S3yH_0hNDtkO4SYOZiFROA",
-        consumerSecret : "NXQro3vSpGwgaMuL3N7OeUVi9xc",
-        accessToken : "5QfCEAXQD-CqfMMv_hUg2VJbObcZV91z",
-        // This example is a proof of concept, for how to use the Yelp v2 API with javascript.
-        // You wouldn't actually want to expose your access token secret like this in a real application.
-        accessTokenSecret : "BAsY9N0jdeaL6QVPWcAqiBVP4FU",
-        serviceProvider : {
-            signatureMethod : "HMAC-SHA1"
-        }
-    };
+    var auth = yelpcreds();
 
     // var limit = '20';
     var sort = '0';
@@ -81,11 +69,10 @@ $(document).ready(function()  {
                 card += "<div class='description'>"+address+"</div></div>";
                 // add button
 
-                console.log(near);
                 var add = "addRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
                 var del = "delRest(\'" + encodeURIComponent(near) + "\',\'" + encodeURIComponent(name) + "\',\'" + encodeURIComponent(rawadd) + "\',\'" + encodeURIComponent(restimg) +"\')"
-                card += "<div class='extra content'><div class='ui two buttons'><div class='ui bottom attached button' onclick="+add+"><i class='add icon'></i>Add</div>";
-                card += "<div class='ui bottom attached button' onclick="+del+"><i class='remove icon'></i>Remove</div></div></div></div>";
+                card += "<div class='extra content'><div class='ui two buttons'><div class='ui bottom attached teal button' onclick="+add+"><i class='add icon'></i>Add</div>";
+                card += "<div class='ui bottom attached red button' id='del' onclick="+del+"><i class='remove icon'></i>Remove</div></div></div></div>";
                 // card += "<div class='ui popup'><div class='header'>Rating</div><div class='ui star rating' data-rating='3'></div></div></div>";
 
                 // add card to cards list
@@ -114,14 +101,11 @@ $(function(){
 });
 
 function addRest(title, name, address, img) {
-  console.log("add clicked");
 
   var restinfo = {};
   restinfo.name = decodeURIComponent(name);
   restinfo.address = decodeURIComponent(address);
   restinfo.img = decodeURIComponent(img);
-
-  console.log(restinfo);
 
   // create restaurant that has username, title, and restaurant info
    $.ajax({
@@ -129,14 +113,13 @@ function addRest(title, name, address, img) {
             type: 'PUT',
             data: { title: decodeURIComponent(title), restaurant: restinfo },
             success: function(result){
-                $('#results').html(result);
+                console.log("Successfully added item");
             }
         });
         event.preventDefault();
 }
 
 function delRest(title, name, address, img) {
-  console.log("del clicked");
 
   var restinfo = {};
   restinfo.name = decodeURIComponent(name);
@@ -152,7 +135,6 @@ function delRest(title, name, address, img) {
             data: { title: decodeURIComponent(title), restaurant: restinfo },
             success:function(result){
                 console.log("Successfully deleted item");
-                $('#results').append(result);
             }
         });
         event.preventDefault();

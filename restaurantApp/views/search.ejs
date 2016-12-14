@@ -2,37 +2,54 @@
 
 <head>
   <% include ./partials/head %>
+  <script src="javascripts/yelpcreds.js"></script>
   <script src="javascripts/search.js"></script>
 </head>
 
 <body>
-  <% include ./partials/nav %>
-
-  <div class="container">
-    <div class="tab-content">
-      <div id="results"></div>
-      <div id="search" class="tab-pane fade">
-        <center>
-        <form id="f1" class="ui large form">
-          <p>Enter the Location You Will be Visiting:</p>
-          <div class="inline field">
-            <label>Location: </label>
-            <input id="searchLocation" type="text" name="location" placeholder="e.g. Pittsburgh">
-          <button class="ui button" type="submit">Search</button>
-          </div>
-        </form>
-        <p>
-        <div id="searchContainer">
-          <div class="ui cards" id="restCards">
-          </div>
-        </center>
+  <div class="header">
+        <% include ./partials/home %>
+        <div class="ui secondary pointing menu">
+        <a class="active item" href="/search">
+          Search
+        </a>
+        <a class="item" href="/mylists">
+          My Lists
+        </a>
+        <div class="right menu">
+        <div class="ui item">Welcome, <%= username %>!</div>
+          <a class="ui item" href="/logout"><i class="sign out icon"></i>
+            Logout
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-
-  <footer>
-      <% include ./partials/footer %>
-  </footer>
+    <div class="content" id="app">
+        <div class="container">
+        <div class="tab-content">
+          <div id="results"></div>
+          <div id="search" class="tab-pane fade">
+            <center>
+            <form id="f1" class="ui large form">
+              <p>Enter the Location You Will be Visiting:</p>
+              <div class="inline field">
+                <label>Location: </label>
+                <input id="searchLocation" type="text" name="location" placeholder="e.g. Pittsburgh">
+              <button class="ui button" type="submit"><i class="chevron right icon"></i></button>
+              </div>
+            </form>
+            <p>
+            <div id="searchContainer">
+              <div class="ui cards" id="restCards">
+              </div>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+        <% include ./partials/footer %>
+    </div>
 
 </body>
 

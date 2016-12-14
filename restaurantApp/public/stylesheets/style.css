@@ -1,22 +1,56 @@
-* {
-    margin: 0;
+#logo {
+	height: 20%;
 }
-html, body {
-    height: 100%;
+
+#logo, img {
+	height: 6.25em;
+}
+
+html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
 }
 .wrapper {
-    min-height: 100%;
-    height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
-    height: 100%;
-    margin: 0 auto -155px; /* the bottom margin is the negative value of the footer's height */
-}
-.footer, .push {
-    height: 155px; /* .push must be the same height as .footer */
+	min-height:100%;
+	position:relative;
 }
 
-/*
+.header {
+	padding-top: 10px;
+}
 
-Sticky Footer by Ryan Fait
-http://ryanfait.com/
+#home.content {
+	padding-top: 100px;
+	padding-bottom:10%;   /* Height of the footer element */
+}
 
-*/
+#app.content {
+	padding-top: 20px;
+	padding-bottom:10%;   /* Height of the footer element */
+}
+.footer {
+	padding-top: 20px;
+	height: 100px;
+}
+#del.ui.bottom.attached.button {
+	background-color: #ef6367;
+}
+
+.ui.button{
+	background: rgba(255,255,255,0.9);
+	color: rgb(94,132,127);
+}
+
+.ui.accordion .title:not(.ui) {
+	font-size: 1.5em;
+}
+
+#lists {
+	width: 70%;
+}
+
+#searchcontainer {
+	width:70%;
+}

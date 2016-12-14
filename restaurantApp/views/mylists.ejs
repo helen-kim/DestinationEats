@@ -7,13 +7,32 @@
 </head>
 
 <body>
-	<% include ./partials/nav %>
-
-	<div id="lists">
+	<div class="header">
+        <% include ./partials/home %>
+        <div class="ui secondary pointing menu">
+        <a class="item" href="/search">
+          Search
+        </a>
+        <a class="active item" href="/mylists">
+          My Lists
+        </a>
+        <div class="right menu">
+        <div class="ui item">Welcome, <%= username %>!</div>
+          <a class="ui item" href="/logout"><i class="sign out icon"></i>
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="content" id="app">
+	    <center>
+			<div id="lists">
+			</div>
+		</center>
 	</div>
-    <footer>
+    <div class="footer">
         <% include ./partials/footer %>
-    </footer>
+    </div>
 
 </body>
 

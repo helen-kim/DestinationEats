@@ -3,28 +3,23 @@
 
 <head>
     <% include ./partials/head %>
+    <% if (username == false ) { %>
+        <script src="javascripts/login.js"></script>
+    <% } %>
 </head>
 
 <body>
-    <% include ./partials/nav %>
-    <div class="container">
-
-        <div class="row">
-            <div class="box">
-                <div class="col-lg-12">
-                    <% if (username == false ) { %>
-                        <% include ./partials/login %>
-                    <% } else { %>
-                        <% include ./partials/home %>
-                    <% } %>
-                </div>
-            </div>
-        </div>
-    </div><!-- /.container -->
-
-    <footer>
+    <div class="header">
+        <% include ./partials/home %>
+    </div>
+    <div class="content" id="home">
+        <% if (username == false ) { %>
+            <% include ./partials/login %>
+        <% } %>
+    </div>
+    <div class="footer">
         <% include ./partials/footer %>
-    </footer>
+    </div>
 
 </body>
 

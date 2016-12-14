@@ -8,10 +8,8 @@ exports.init = function(app) {
   app.get('/', homepage); // The homepage page
   app.get('/home', homepage); // Can be accessed by another url
   app.get('/logout', logout); // Log out user and end session
-  app.get('/about', about); // The about page
   app.get('/search', search); // The search page
   app.get('/mylists', mylists); // My restaurant lists page
-  app.get('/test', test); // Restaurant Model Test
  
   // The collection parameter maps directly to the mongoDB collection
   app.put('/:collection', doCreate); // CRUD Create
@@ -39,15 +37,6 @@ homepage = function(req, res) {
 logout = function(req, res) {
   req.session.reset();
   res.redirect('/home');
-}
-
-about = function(req, res) {
-  if ( req.session.user == undefined) {
-    res.render('homepage', { username: false } );
-  }
-  else {
-    res.render('homepage', { username: req.session.user } );
-  }
 }
 
 search = function(req, res) {

@@ -1,3 +1,4 @@
+//------------------------------LOGIN/REGISTER CALLS FOR STATIC PAGES------------------------------------
 $(document).ready(function() {
   // CR functionality for users
   $('#login').submit(login_user); //read logged in user
@@ -15,7 +16,7 @@ $(document).ready(function() {
           $('#error').html("<p>Incorrect username or password. Please try again!</p>");
         }
         console.log("Successfully found user!");
-        window.location.reload(true);
+        window.location.href='/search';
       },
       error: function(response, status) {
         alert("Incorrect username or password. Please try again!");
@@ -36,10 +37,34 @@ $(document).ready(function() {
       data: { firstname: first_name, lastname: last_name, email: user_email, 
         username: user_name, password: user_password },
       success: function(result) {
-        $('#error').html("<p>Congrats! You've been added to our system. Enter your login information below to get started.</p>");
+        loginfromregistration(user_name, user_password);
         console.log("Successfully added user to system!");
       }
     });
     event.preventDefault();
   }
+
+  function loginfromregistration(username, password) {
+    var user_name = username;
+    var user_password = password;
+    $.ajax({
+      url: './users',
+      type: 'GET',
+      data: { username: user_name, password: user_password },
+      success: function(result) {
+        if (result.length == 0) {
+          $('#error').html("<p>Incorrect username or password. Please try again!</p>");
+        }
+        console.log("Successfully found user!");
+        window.location.href='/search';
+      },
+      error: function(response, status) {
+        alert("Incorrect username or password. Please try again!");
+      }
+    });
+    event.preventDefault();
+  }
 })
+
+
+
